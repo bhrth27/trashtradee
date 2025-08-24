@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Who Are You? - Select Your Role</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-green: #2c5530;
+            --secondary-green: #4a7c59;
+            --accent-green: #6fa86f;
+            --light-green: #e8f5e8;
+            --gold-accent: #ffd700;
+            --warm-white: #fefefe;
+            --glass-bg: rgba(255, 255, 255, 0.15);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --shadow-soft: 0 8px 32px rgba(0, 0, 0, 0.1);
+            --shadow-strong: 0 20px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #0f4c3a 0%, #2c5530 25%, #4a7c59 50%, #6fa86f 75%, #8bc34a 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            overflow-x: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Animated Background Elements */
+        .bg-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .bg-shape {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .bg-shape:nth-child(1) {
+            width: 200px;
+            height: 200px;
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .bg-shape:nth-child(2) {
+            width: 150px;
+            height: 150px;
+            top: 60%;
+            right: 15%;
+            animation-delay: 7s;
+        }
+
+        .bg-shape:nth-child(3) {
+            width: 300px;
+            height: 300px;
+            bottom: 10%;
+            left: 20%;
+            animation-delay: 14s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.5; }
+            50% { transform: translateY(-30px) rotate(180deg); opacity: 0.8; }
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+            width: 100%;
+        }
+
+        /* Main Selection Card */
+        .selection-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            color: white;
+            text-align: center;
+            padding: 4rem 3rem;
+            border-radius: 30px;
+            border: 1px solid var(--glass-border);
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-strong);
+            animation: slideIn 0.8s ease-out;
+        }
+
+        .selection-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.1) 0%, transparent 70%);
+            animation: rotate 30s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(50px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .selection-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-15px); }
+            60% { transform: translateY(-8px); }
+        }
+
+        .main-title {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #fff, var(--gold-accent), #fff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 900;
+            line-height: 1.1;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 20px rgba(255, 215, 0, 0.3); }
+            to { text-shadow: 0 0 30px rgba(255, 215, 0, 0.6); }
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            margin-bottom: 3rem;
+            opacity: 0.9;
+            font-weight: 400;
+            line-height: 1.6;
+        }
+
+        /* Role Selection Buttons */
+        .role-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .role-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
+            padding: 3rem 2rem;
+            color: white;
+            text-decoration: none;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+            cursor: pointer;
+            backdrop-filter: blur(15px);
+        }
+
+        .role-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.2), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .role-btn:hover::before {
+            left: 100%;
+        }
+
+        .role-btn:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: var(--shadow-strong);
+            border-color: var(--gold-accent);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .role-btn:active {
+            transform: translateY(-8px) scale(1.02);
+        }
+
+        .role-icon {
+            font-size: 4rem;
+            margin-bottom: 0.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .role-btn:hover .role-icon {
+            transform: scale(1.2) rotate(5deg);
+        }
+
+        .role-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+            background: linear-gradient(45deg, #fff, var(--gold-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .role-description {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            line-height: 1.5;
+            text-align: center;
+        }
+
+        /* Special styling for different roles */
+        .seller-btn {
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.2), rgba(46, 125, 50, 0.2));
+        }
+
+        .seller-btn:hover {
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.3), rgba(46, 125, 50, 0.3));
+        }
+
+        .buyer-btn {
+            background: linear-gradient(135deg, rgba(33, 150, 243, 0.2), rgba(13, 71, 161, 0.2));
+        }
+
+        .buyer-btn:hover {
+            background: linear-gradient(135deg, rgba(33, 150, 243, 0.3), rgba(13, 71, 161, 0.3));
+        }
+
+        /* Loading state */
+        .loading {
+            display: none;
+            margin-top: 1rem;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--gold-accent);
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .selection-card {
+                padding: 3rem 2rem;
+                margin: 1rem;
+            }
+
+            .main-title {
+                font-size: 2.5rem;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+            }
+
+            .role-buttons {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .role-btn {
+                padding: 2.5rem 1.5rem;
+            }
+
+            .role-title {
+                font-size: 1.7rem;
+            }
+
+            .role-icon {
+                font-size: 3.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-title {
+                font-size: 2rem;
+            }
+
+            .logo {
+                font-size: 3rem;
+            }
+
+            .role-btn {
+                padding: 2rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="bg-shapes">
+        <div class="bg-shape"></div>
+        <div class="bg-shape"></div>
+        <div class="bg-shape"></div>
+    </div>
+
+    <div class="container">
+        <div class="selection-card">
+            <div class="selection-content">
+                <div class="logo">♻️</div>
+                <h1 class="main-title">Who Are You?</h1>
+                <p class="subtitle">Choose your role to continue to the appropriate platform</p>
+                
+                <div class="role-buttons">
+                    <a href="#" class="role-btn seller-btn" onclick="redirectTo('seller')">
+                        <div class="role-icon">🏪</div>
+                        <h3 class="role-title">Seller</h3>
+                        <p class="role-description">I want to sell eco-friendly products and reach sustainable-minded customers</p>
+                    </a>
+                    
+                    <a href="#" class="role-btn buyer-btn" onclick="redirectTo('buyer')">
+                        <div class="role-icon">🛒</div>
+                        <h3 class="role-title">Buyer</h3>
+                        <p class="role-description">I want to discover and purchase sustainable, eco-friendly products</p>
+                    </a>
+                </div>
+
+                <div class="loading" id="loadingMessage">
+                    <div class="loading-spinner"></div>
+                    <span>Redirecting you to the platform...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function redirectTo(role) {
+            // Show loading state
+            document.getElementById('loadingMessage').style.display = 'block';
+            
+            // Add a small delay for better UX
+            setTimeout(() => {
+                if (role === 'seller') {
+                    // Redirect to seller login page
+                    window.location.href = 'loginsell.html';
+                } else if (role === 'buyer') {
+                    // Redirect to buyer login page
+                    window.location.href = 'loginbu.html';
+                }
+            }, 1000);
+        }
+
+        // Add some interactive effects
+        document.addEventListener('DOMContentLoaded', function() {
+            const roleButtons = document.querySelectorAll('.role-btn');
+            
+            roleButtons.forEach(button => {
+                button.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-10px) scale(1.05)';
+                });
+                
+                button.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+        });
+
+        // Add keyboard navigation
+        document.addEventListener('keydown', function(event) {
+            if (event.key === '1') {
+                redirectTo('seller');
+            } else if (event.key === '2') {
+                redirectTo('buyer');
+            }
+        });
+    </script>
+</body>
+</html>
